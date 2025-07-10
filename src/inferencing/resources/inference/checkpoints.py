@@ -25,10 +25,10 @@ class CheckpointsResource(SyncAPIResource):
     @cached_property
     def with_raw_response(self) -> CheckpointsResourceWithRawResponse:
         """
-        This property can be used as a prefix for any HTTP method call to return the
+        This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/inferencing-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/harshays98/stainless_sdk_private#accessing-raw-response-data-eg-headers
         """
         return CheckpointsResourceWithRawResponse(self)
 
@@ -37,7 +37,7 @@ class CheckpointsResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/inferencing-python#with_streaming_response
+        For more information, see https://www.github.com/harshays98/stainless_sdk_private#with_streaming_response
         """
         return CheckpointsResourceWithStreamingResponse(self)
 
@@ -148,10 +148,10 @@ class AsyncCheckpointsResource(AsyncAPIResource):
     @cached_property
     def with_raw_response(self) -> AsyncCheckpointsResourceWithRawResponse:
         """
-        This property can be used as a prefix for any HTTP method call to return the
+        This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/inferencing-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/harshays98/stainless_sdk_private#accessing-raw-response-data-eg-headers
         """
         return AsyncCheckpointsResourceWithRawResponse(self)
 
@@ -160,7 +160,7 @@ class AsyncCheckpointsResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/inferencing-python#with_streaming_response
+        For more information, see https://www.github.com/harshays98/stainless_sdk_private#with_streaming_response
         """
         return AsyncCheckpointsResourceWithStreamingResponse(self)
 
