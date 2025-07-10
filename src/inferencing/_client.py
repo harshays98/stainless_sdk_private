@@ -8,7 +8,7 @@ from typing_extensions import Self, override
 
 import httpx
 
-from . import resources, _exceptions
+from . import _exceptions
 from ._qs import Querystring
 from ._types import (
     NOT_GIVEN,
@@ -19,11 +19,9 @@ from ._types import (
     ProxiesTypes,
     RequestOptions,
 )
-from ._utils import (
-    is_given,
-    get_async_library,
-)
+from ._utils import is_given, get_async_library
 from ._version import __version__
+from .resources import clusters
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import APIStatusError
 from ._base_client import (
@@ -31,13 +29,13 @@ from ._base_client import (
     SyncAPIClient,
     AsyncAPIClient,
 )
+from .resources.inference import inference
 
 __all__ = [
     "Timeout",
     "Transport",
     "ProxiesTypes",
     "RequestOptions",
-    "resources",
     "Inferencing",
     "AsyncInferencing",
     "Client",
@@ -46,8 +44,8 @@ __all__ = [
 
 
 class Inferencing(SyncAPIClient):
-    clusters: resources.ClustersResource
-    inference: resources.InferenceResource
+    clusters: clusters.ClustersResource
+    inference: inference.InferenceResource
     with_raw_response: InferencingWithRawResponse
     with_streaming_response: InferencingWithStreamedResponse
 
@@ -75,7 +73,7 @@ class Inferencing(SyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new synchronous inferencing client instance."""
+        """Construct a new synchronous Inferencing client instance."""
         if base_url is None:
             base_url = os.environ.get("INFERENCING_BASE_URL")
         if base_url is None:
@@ -92,8 +90,8 @@ class Inferencing(SyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.clusters = resources.ClustersResource(self)
-        self.inference = resources.InferenceResource(self)
+        self.clusters = clusters.ClustersResource(self)
+        self.inference = inference.InferenceResource(self)
         self.with_raw_response = InferencingWithRawResponse(self)
         self.with_streaming_response = InferencingWithStreamedResponse(self)
 
@@ -195,8 +193,8 @@ class Inferencing(SyncAPIClient):
 
 
 class AsyncInferencing(AsyncAPIClient):
-    clusters: resources.AsyncClustersResource
-    inference: resources.AsyncInferenceResource
+    clusters: clusters.AsyncClustersResource
+    inference: inference.AsyncInferenceResource
     with_raw_response: AsyncInferencingWithRawResponse
     with_streaming_response: AsyncInferencingWithStreamedResponse
 
@@ -224,7 +222,7 @@ class AsyncInferencing(AsyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new async inferencing client instance."""
+        """Construct a new async AsyncInferencing client instance."""
         if base_url is None:
             base_url = os.environ.get("INFERENCING_BASE_URL")
         if base_url is None:
@@ -241,8 +239,8 @@ class AsyncInferencing(AsyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.clusters = resources.AsyncClustersResource(self)
-        self.inference = resources.AsyncInferenceResource(self)
+        self.clusters = clusters.AsyncClustersResource(self)
+        self.inference = inference.AsyncInferenceResource(self)
         self.with_raw_response = AsyncInferencingWithRawResponse(self)
         self.with_streaming_response = AsyncInferencingWithStreamedResponse(self)
 
@@ -345,26 +343,26 @@ class AsyncInferencing(AsyncAPIClient):
 
 class InferencingWithRawResponse:
     def __init__(self, client: Inferencing) -> None:
-        self.clusters = resources.ClustersResourceWithRawResponse(client.clusters)
-        self.inference = resources.InferenceResourceWithRawResponse(client.inference)
+        self.clusters = clusters.ClustersResourceWithRawResponse(client.clusters)
+        self.inference = inference.InferenceResourceWithRawResponse(client.inference)
 
 
 class AsyncInferencingWithRawResponse:
     def __init__(self, client: AsyncInferencing) -> None:
-        self.clusters = resources.AsyncClustersResourceWithRawResponse(client.clusters)
-        self.inference = resources.AsyncInferenceResourceWithRawResponse(client.inference)
+        self.clusters = clusters.AsyncClustersResourceWithRawResponse(client.clusters)
+        self.inference = inference.AsyncInferenceResourceWithRawResponse(client.inference)
 
 
 class InferencingWithStreamedResponse:
     def __init__(self, client: Inferencing) -> None:
-        self.clusters = resources.ClustersResourceWithStreamingResponse(client.clusters)
-        self.inference = resources.InferenceResourceWithStreamingResponse(client.inference)
+        self.clusters = clusters.ClustersResourceWithStreamingResponse(client.clusters)
+        self.inference = inference.InferenceResourceWithStreamingResponse(client.inference)
 
 
 class AsyncInferencingWithStreamedResponse:
     def __init__(self, client: AsyncInferencing) -> None:
-        self.clusters = resources.AsyncClustersResourceWithStreamingResponse(client.clusters)
-        self.inference = resources.AsyncInferenceResourceWithStreamingResponse(client.inference)
+        self.clusters = clusters.AsyncClustersResourceWithStreamingResponse(client.clusters)
+        self.inference = inference.AsyncInferenceResourceWithStreamingResponse(client.inference)
 
 
 Client = Inferencing

@@ -1,7 +1,7 @@
 import json
 from typing import Any, Dict, List, Union, Optional, cast
 from datetime import datetime, timezone
-from typing_extensions import Literal, Annotated
+from typing_extensions import Literal, Annotated, TypeAliasType
 
 import pytest
 import pydantic
@@ -492,12 +492,15 @@ def test_omitted_fields() -> None:
         resource_id: Optional[str] = None
 
     m = Model.construct()
+    assert m.resource_id is None
     assert "resource_id" not in m.model_fields_set
 
     m = Model.construct(resource_id=None)
+    assert m.resource_id is None
     assert "resource_id" in m.model_fields_set
 
     m = Model.construct(resource_id="foo")
+    assert m.resource_id == "foo"
     assert "resource_id" in m.model_fields_set
 
 
@@ -828,3 +831,106 @@ def test_discriminated_unions_invalid_data_uses_cache() -> None:
     # if the discriminator details object stays the same between invocations then
     # we hit the cache
     assert UnionType.__discriminator__ is discriminator
+
+
+@pytest.mark.skipif(not PYDANTIC_V2, reason="TypeAliasType is not supported in Pydantic v1")
+def test_type_alias_type() -> None:
+    Alias = TypeAliasType("Alias", str)  # pyright: ignore
+
+    class Model(BaseModel):
+        alias: Alias
+        union: Union[int, Alias]
+
+    m = construct_type(value={"alias": "foo", "union": "bar"}, type_=Model)
+    assert isinstance(m, Model)
+    assert isinstance(m.alias, str)
+    assert m.alias == "foo"
+    assert isinstance(m.union, str)
+    assert m.union == "bar"
+
+
+@pytest.mark.skipif(not PYDANTIC_V2, reason="TypeAliasType is not supported in Pydantic v1")
+def test_field_named_cls() -> None:
+    class Model(BaseModel):
+        cls: str
+
+    m = construct_type(value={"cls": "foo"}, type_=Model)
+    assert isinstance(m, Model)
+    assert isinstance(m.cls, str)
+
+
+def test_discriminated_union_case() -> None:
+    class A(BaseModel):
+        type: Literal["a"]
+
+        data: bool
+
+    class B(BaseModel):
+        type: Literal["b"]
+
+        data: List[Union[A, object]]
+
+    class ModelA(BaseModel):
+        type: Literal["modelA"]
+
+        data: int
+
+    class ModelB(BaseModel):
+        type: Literal["modelB"]
+
+        required: str
+
+        data: Union[A, B]
+
+    # when constructing ModelA | ModelB, value data doesn't match ModelB exactly - missing `required`
+    m = construct_type(
+        value={"type": "modelB", "data": {"type": "a", "data": True}},
+        type_=cast(Any, Annotated[Union[ModelA, ModelB], PropertyInfo(discriminator="type")]),
+    )
+
+    assert isinstance(m, ModelB)
+
+
+def test_nested_discriminated_union() -> None:
+    class InnerType1(BaseModel):
+        type: Literal["type_1"]
+
+    class InnerModel(BaseModel):
+        inner_value: str
+
+    class InnerType2(BaseModel):
+        type: Literal["type_2"]
+        some_inner_model: InnerModel
+
+    class Type1(BaseModel):
+        base_type: Literal["base_type_1"]
+        value: Annotated[
+            Union[
+                InnerType1,
+                InnerType2,
+            ],
+            PropertyInfo(discriminator="type"),
+        ]
+
+    class Type2(BaseModel):
+        base_type: Literal["base_type_2"]
+
+    T = Annotated[
+        Union[
+            Type1,
+            Type2,
+        ],
+        PropertyInfo(discriminator="base_type"),
+    ]
+
+    model = construct_type(
+        type_=T,
+        value={
+            "base_type": "base_type_1",
+            "value": {
+                "type": "type_2",
+            },
+        },
+    )
+    assert isinstance(model, Type1)
+    assert isinstance(model.value, InnerType2)
