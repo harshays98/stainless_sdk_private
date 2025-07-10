@@ -1,2 +1,4 @@
 configured_endpoints: 8
 openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/olakrutrim%2Finferencing-b699499be8edd30209b2facc6feaffc6cf3eba636982f86a47dbd4344bac7c18.yml
+openapi_spec_hash: 48f9b07d77f23bd71e1557196c433db6
+config_hash: 9e1547211d8d71382f1cfe53cc64433f

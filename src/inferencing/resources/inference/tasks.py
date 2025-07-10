@@ -5,10 +5,7 @@ from __future__ import annotations
 import httpx
 
 from ..._types import NOT_GIVEN, Body, Query, Headers, NoneType, NotGiven
-from ..._utils import (
-    maybe_transform,
-    async_maybe_transform,
-)
+from ..._utils import maybe_transform, async_maybe_transform
 from ..._compat import cached_property
 from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
@@ -30,10 +27,10 @@ class TasksResource(SyncAPIResource):
     @cached_property
     def with_raw_response(self) -> TasksResourceWithRawResponse:
         """
-        This property can be used as a prefix for any HTTP method call to return the
+        This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/inferencing-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/harshays98/stainless_sdk_private#accessing-raw-response-data-eg-headers
         """
         return TasksResourceWithRawResponse(self)
 
@@ -42,7 +39,7 @@ class TasksResource(SyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/inferencing-python#with_streaming_response
+        For more information, see https://www.github.com/harshays98/stainless_sdk_private#with_streaming_response
         """
         return TasksResourceWithStreamingResponse(self)
 
@@ -267,10 +264,10 @@ class AsyncTasksResource(AsyncAPIResource):
     @cached_property
     def with_raw_response(self) -> AsyncTasksResourceWithRawResponse:
         """
-        This property can be used as a prefix for any HTTP method call to return the
+        This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
-        For more information, see https://www.github.com/stainless-sdks/inferencing-python#accessing-raw-response-data-eg-headers
+        For more information, see https://www.github.com/harshays98/stainless_sdk_private#accessing-raw-response-data-eg-headers
         """
         return AsyncTasksResourceWithRawResponse(self)
 
@@ -279,7 +276,7 @@ class AsyncTasksResource(AsyncAPIResource):
         """
         An alternative to `.with_raw_response` that doesn't eagerly read the response body.
 
-        For more information, see https://www.github.com/stainless-sdks/inferencing-python#with_streaming_response
+        For more information, see https://www.github.com/harshays98/stainless_sdk_private#with_streaming_response
         """
         return AsyncTasksResourceWithStreamingResponse(self)
 
